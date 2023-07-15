@@ -1,10 +1,13 @@
-import { createContext, useState } from "react";
-import { LoginService } from "../api/allApiCalls";
-import { SignUpService } from "../api/allApiCalls";
+import { createContext, useState, useContext } from "react";
+import { LoginService } from "../Api/allApiCalls";
+import { SignUpService } from "../Api/allApiCalls";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const navigate = useNavigate();
   const localStorageToken = JSON.parse(localStorage.getItem("loginItems"));
   const [loginStatus, setLoginStatus] = useState({
     token: localStorageToken?.token,
@@ -17,15 +20,23 @@ export const AuthProvider = ({ children }) => {
         data: { foundUser, encodedToken },
         status,
       } = await LoginService({ email, password });
-      if (status === 200) {
+
+      if (status === 200 || status === 201) {
         localStorage.setItem(
           "loginItems",
           JSON.stringify({ token: encodedToken, user: foundUser })
         );
         setLoginStatus({ token: encodedToken, user: foundUser });
+        toast.success(`Welcome back, ${foundUser.firstName}!`);
+        navigate(location?.state?.from?.pathname, "/", { replace: true });
+      } else if (status === 404) {
+        toast.error(
+          "The username you entered is not Registered, Please Signup before Login"
+        );
       }
     } catch (e) {
       console.log(e);
+      toast.error("Please enter correct login details");
     }
   };
 
@@ -41,7 +52,6 @@ export const AuthProvider = ({ children }) => {
         status,
       } = await SignUpService({ email, password, name });
       if (status === 200) {
-        // saving the encodedToken in the localStorage
         localStorage.setItem(
           "loginItems",
           JSON.stringify({ token: encodedToken, user: createdUser })

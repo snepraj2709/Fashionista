@@ -12,7 +12,9 @@ export const GetAllProducts = async () => axios.get("/api/products");
 
 export const GetAllCategories = async () => axios.get("/api/categories");
 
-export const GetAllSizes = async () => axios.get("/api/size");
+export const GetAllSizes = async () => axios.get("/api/sizes");
+
+export const GetSingleSize = async () => axios.get("/api/user/sizes/:sizeId");
 
 //private route (wishlist routes)
 export const GetWishlist = async ({ encodedToken }) => {

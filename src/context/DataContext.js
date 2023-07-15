@@ -1,12 +1,12 @@
-import { useEffect, useReducer } from "react";
-import { useAuth } from "./authContext";
-import { DataReducer } from "../reducer/DataReducer";
+import { useEffect, useReducer, createContext } from "react";
+import { useAuth } from "./AuthContext";
+import { DataReducer } from "../Reducer/DataReducer";
 import {
   GetAllCategories,
   GetAllProducts,
   GetAllSizes,
-} from "../api/allApiCalls";
-import { ActionTypes, initialState } from "../utils/actionConstants";
+} from "../Api/allApiCalls";
+import { ActionTypes, initialState } from "../Utils/actionConstants";
 
 export const DataContext = createContext();
 

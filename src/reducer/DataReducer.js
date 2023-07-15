@@ -1,4 +1,4 @@
-import { ActionTypes } from "../utils/actionConstants";
+import { ActionTypes } from "../Utils/actionConstants";
 
 export const DataReducer = (state, { type, payload }) => {
   switch (type) {
